@@ -1,0 +1,44 @@
+---
+title: "Star Wars Blog"
+author: "Richard Carter & Roman Popat"
+date: "2 December 2015"
+output: word_document
+---
+
+```{r, echo = F, message = F}
+# 1. Load and Tidy
+library(textcat)
+library(ggplot2)
+charNames <- read.csv("~/OneDriveBusiness/Projects/NameClustering/Data/star_wars_dataframe.csv", 
+                      header = F, as.is = T, sep = "\t", skip = 1)
+names(charNames) <- c("name", "desc")
+
+# 2. Categorise
+charNames$langCat <- ""
+for(i in 1:nrow(charNames)){
+  charNames$langCat[i] <- textcat(charNames$name[i])
+}
+counts <- data.frame(table(charNames$langCat))
+names(counts) <- c("language", "count")
+counts$language <- reorder(counts$language, counts$count)
+```
+
+(Introduction missing...)
+
+We analysed the names of `r nrow(charNames)` Star Wars characters taken from a wikipedia page. These include names from the series of Star Wars books. We used a method of text categorisation commonly used to predict which language a piece of text belongs to. The text is chopped up into small bits, for example the word 'Star' can be chopped up into the letters S-T-A-R but also the letter combinations ST, TA, AR, STA and TAR. We then count up how many times each letter combination occurs. The rate at which letter combinations occur in a piece of text is compared to the rate at which the same letter combinations occur in different languages. Using this 'n-gram' method or model, we can say that a particular piece of text is most like a particular language, in the case of the word 'Star' this is `r textcat("Star")`.
+
+We performed this process for the `r nrow(charNames)` Star Wars characters we could get hold of. In each case we derived a language classification and totalled the number of characters that matched each language (results below).
+
+```{r, echo = F, message = F, dev = "png", dpi = 200, fig.width = 4, fig.height = 6}
+ggplot(counts, aes(x = language, y = count)) +
+  geom_bar(stat = "identity") +
+  coord_flip()
+```
+
+...
+
+(possible caveat to end on...)
+Keep in mind that these algorithms are designed to categorise text documents that contain several paragraphs if not hundreds of pages. They can also be used to categorise technical documents into different subjects, categories, or academic disciplines. The accuracy is quite compromised when attempting to use a single word or a two word name.
+
+
+

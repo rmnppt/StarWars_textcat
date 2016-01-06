@@ -1,0 +1,37 @@
+---
+title: "Language categorisation of Star Wars character names"
+author: "Roman Popat"
+date: "6 January 2016"
+output: html_document
+layout: post
+---
+
+Last year in December, in time for the big release, myself and a colleague at The Data Lab were having some fun with an Star Wars character names that we had scraped from [Wikipedia](https://en.wikipedia.org/wiki/List_of_Star_Wars_characters). We had the idea one lunch time to attempt to cluster the names by similarity. What we setlled on was to classify the names into groups. One way to do this is to employ the popular text categorisation software 'textcat'. This can be used to classify new unseen text on the basis of a labelled corpus of previous text. In this case we will use it to classify the language of the unseen text. I've put two key papers in the footnotes here which I heartily recommend, thanks to all athors and conrtibuters[^1]. I'll explain the basis of the method here briefly.
+
+First the labelled corpus of text is split into letter [n-grams](https://en.wikipedia.org/wiki/N-gram) or consecutive letter combinations. For example the word STAR would be split into S, T, A, R, ST, TA, AR, STA and TAR and STAR. An n-gram frequency distribution can be attrubuted to each class, in this case each language. The unseen text is then also split into n-grams and a frequency distribution generated. Then its a matter of using a distance measure to compare the n-grams of the unseen text to those of the labelled corpus and choosing the smallest distance. All of this is done for you in the beautiful R package `textcat` see [^1]. 
+
+First things first, there is a huge caveat here. We are using very small samples of unseen text, the length of a character name, to 'guess' the language that it comes from. My hunch is that this is not a good idea. It is however quite fun. On top of that we can only detect languages for which we have a corpus, see [^1] for more info on how the authors of `texcat` did this. On top of *that* we have no attempt at assigning the relative probabilities of each possible classification. This is actually quite interesting and if anyone has ideas on that I would love to hear from you.
+
+With caveats firmly in place, lets set it up.
+
+```{r}
+library(MASS)
+library(textcat)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+[^1]: 
+
+1. Cavnar, W.B., Trenkle, J.M., (1994) N-Gram-Based Text Categorization. Proceedings of SDAIR-94, 3rd Annual Symposium on Document Analysis and Information Retrieval [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.9367](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.9367)
+
+2. Hornik, K., Mair, P., Rauch, J., Geiger, W., Buchta, C., & Feinerer, I. (2013). The textcat Package for n-Gram Based Text Categorization in R. Journal of Statistical Software, 52(6), 1 - 17. [doi:http://dx.doi.org/10.18637/jss.v052.i06](doi:http://dx.doi.org/10.18637/jss.v052.i06)
